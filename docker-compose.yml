@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile.local
+    volumes:
+      - ./:/home/node
+    env_file:
+      - ./env/.env.local-docker
+    ports:
+      - 3103:3000
+    networks:
+      - network_front
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+networks:
+  network_front:
+    driver: bridge
