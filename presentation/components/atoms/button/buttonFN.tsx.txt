@@ -1,0 +1,67 @@
+import { Button, ButtonProps as ButtonMuiProps } from '@material-ui/core'
+import { ReactNode } from 'react'
+import { useTheme } from '@mui/material'
+import { styled } from '@material-ui/styles'
+
+export const ButtonMui = styled(Button)(() => ({
+  borderRadius: 48,
+  fontSize: 12,
+  textTransform: 'none',
+}))
+
+export type ButtonProps = {
+  children: ReactNode
+  icon?: ReactNode
+  backgroundColor?: string
+  fontColor?: string
+  width?: string
+  secondary?: boolean
+  textColor?: string
+  dataTestId?: string
+  marginRight?: string
+} & ButtonMuiProps
+
+export const getSecondaryStyle = (secondaryValue: any, color1: any, color2: any) => {
+  const color = secondaryValue ? color1 : color2
+  return color
+}
+
+export const ButtonFN = (props: ButtonProps) => {
+  const { children, icon, ...rest } = props
+  const { palette } = useTheme()
+
+  return (
+    <ButtonMui
+      {...rest}
+      data-testid={props.dataTestId}
+      variant="contained"
+      startIcon={icon}
+      color="secondary"
+      size="medium"
+      sx={{
+        lineHeight: 'normal',
+        boxShadow: '0px 4px 8px 0px rgb(46 46 46 / 20%)',
+        backgroundColor: getSecondaryStyle(props.secondary, 'white', palette.primary.main),
+        fontSize: '14px',
+        height: '40px',
+        color: getSecondaryStyle(props.secondary, palette.primary.dark, 'primary'),
+        fontWeight: '10px',
+        marginRight: props.marginRight,
+        width: props.width,
+        border: getSecondaryStyle(props.secondary, `1px solid ${palette.primary.dark}`, ''),
+        ':hover': {
+          backgroundColor: getSecondaryStyle(props.secondary, palette.secondary.light, palette.primary.light),
+        },
+        ':active': {
+          backgroundColor: getSecondaryStyle(props.secondary, palette.secondary.main, palette.primary.dark),
+        },
+        ':disabled': {
+          color: '#666666',
+          borderColor: props.secondary ? '#666666' : '',
+        },
+      }}
+    >
+      {children}
+    </ButtonMui>
+  )
+}
